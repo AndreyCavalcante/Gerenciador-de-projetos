@@ -1,5 +1,7 @@
 let id_geral = $('#id_geral').val();
 
+const projetos_geral = [];
+
 function buscarProjetos(id){
     $.ajax({
         url: 'php/manterProjetos.php',
@@ -8,6 +10,8 @@ function buscarProjetos(id){
         dataType: 'json',
         success: function(result){
             console.log(result);
+
+            projetos_geral.push(result);
 
             let div = document.getElementById('container-content');
             div.innerHTML = '';
@@ -648,3 +652,5 @@ function voltar(e){
     e.preventDefault();
     location.reload();
 }
+
+console.log(projetos_geral);

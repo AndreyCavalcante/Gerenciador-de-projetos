@@ -604,8 +604,6 @@ function maisDetalhes(id){
                             <div>
                                 <p>Investimento: R$ ${investimento.toFixed(2)}</p>
                             </div>
-                        </div>
-                        <div class="container-tabela">
                             <h5>Gastos:</h5>
                             <table class="table-valores">
                                 <tbody>

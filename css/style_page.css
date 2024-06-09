@@ -465,6 +465,7 @@ body{
     background: none;
     border: none; 
     cursor: pointer;
+    outline: none;
 }
 
 .botao-voltar img {

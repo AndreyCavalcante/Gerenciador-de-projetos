@@ -59,12 +59,25 @@
 
         $id = $_POST['id'];
 
-        $sql = "SELECT p.id_projeto AS id_projeto, p.nome_projeto AS nome_projeto, p.descricao_projeto AS descricao, 
+        $query_status = $_POST['status'];
+
+        $sql = "";
+
+        if($query_status == 'todas'){
+            $sql = "SELECT p.id_projeto AS id_projeto, p.nome_projeto AS nome_projeto, p.descricao_projeto AS descricao, 
                 p.categoria_projeto AS categoria, p.investimento AS investimento, p.status_projeto AS status_projeto, 
                 v.destino AS destino, v.valor AS valor
                 FROM projetos p
                 INNER JOIN valores v ON v.id_projeto = p.id_projeto
                 WHERE p.id_usuario = $id";
+        }else{
+            $sql = "SELECT p.id_projeto AS id_projeto, p.nome_projeto AS nome_projeto, p.descricao_projeto AS descricao, 
+                p.categoria_projeto AS categoria, p.investimento AS investimento, p.status_projeto AS status_projeto, 
+                v.destino AS destino, v.valor AS valor
+                FROM projetos p
+                INNER JOIN valores v ON v.id_projeto = p.id_projeto
+                WHERE p.id_usuario = $id AND p.status_projeto = '$query_status'";
+        }
 
         $result = $conecta->query($sql);
 
@@ -104,18 +117,13 @@
     function maisDetalhes($conecta){
         $id = $_POST['id'];
 
-        $query_status = $_POST['status'];
-
-        if($query_status == 'todas'){
-            $query_status = '';
-        }
-
         $sql = "SELECT p.id_projeto AS id_projeto, p.nome_projeto AS nome_projeto, p.descricao_projeto AS descricao, 
-                p.categoria_projeto AS categoria, p.investimento AS investimento, p.status_projeto AS status_projeto, 
-                v.destino AS destino, v.valor AS valor
-                FROM projetos p
-                INNER JOIN valores v ON v.id_projeto = p.id_projeto
-                WHERE p.id_projeto = $id AND p.status_projeto = '$query_status'";
+        p.categoria_projeto AS categoria, p.investimento AS investimento, p.status_projeto AS status_projeto, 
+        v.destino AS destino, v.valor AS valor
+        FROM projetos p
+        INNER JOIN valores v ON v.id_projeto = p.id_projeto
+        WHERE p.id_projeto = $id";
+        
 
         $result = $conecta->query($sql);
 

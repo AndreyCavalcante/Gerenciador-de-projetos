@@ -651,3 +651,23 @@ function voltar(e){
     e.preventDefault();
     location.reload();
 }
+
+function pesqProjetos(id){
+
+    pesq = $('#pesq').val();
+
+    $.ajax({
+        url: 'php/manterProjetos.php',
+        method: 'POST',
+        data: {form: 'pesqProjetos', id: id, pesq: pesq},
+        dataType: 'json',
+        success: function(result){
+            console.log(result);
+        },
+        error: function(xhr, status, error){
+            console.error(xhr.responseText);
+            console.error(status);
+            console.error(error);
+        }
+    });
+}

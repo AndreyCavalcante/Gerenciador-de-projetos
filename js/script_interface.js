@@ -28,6 +28,7 @@ function buscarProjetos(id, status){
                     const nome = projeto.nome_projeto;
                     const descricao = projeto.descricao;
                     const categoria = projeto.categoria;
+                    const status_projeto = projeto.status;
 
                     let card = `
                         <div class="card mb-3 " style="max-width: 540px;">
@@ -39,6 +40,7 @@ function buscarProjetos(id, status){
                                     <div class="card-body">
                                         <h5 class="card-title">${nome}</h5>
                                         <p class="card-text">${descricao}</p>
+                                        <p class="card-text">${status_projeto}</p>
                                         <p class="card-text">
                                             <button type="button" class="btn signin btnedit" onclick="maisDetalhes(${projeto.id_projeto})">
                                                 Mais detalhes

@@ -90,7 +90,7 @@
             </div>
             <div class="justify-content-center text-center">
                 <button type="button" id="projetos" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'todas')">Projetos</button>
-                <button type="button" id="concluidos" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'concluido')">Concluídos</button>
+                <button type="button" id="concluidos" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'Concluído')">Concluídos</button>
                 <button type="button" style="font-size: 16px;" id="em_andamento" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'Em Andamento')">Em andamento</button>
                 <form action="php/logout.php" method="POST"><button type="submit" class="btn signin sair" style="margin-bottom: 10px;">Sair</button></form>
             </div>

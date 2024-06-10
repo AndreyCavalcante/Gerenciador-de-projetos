@@ -1,17 +1,14 @@
 let id_geral = $('#id_geral').val();
 
-const projetos_geral = [];
-
-function buscarProjetos(id){
+function buscarProjetos(id, status){
     $.ajax({
         url: 'php/manterProjetos.php',
         method: 'POST',
-        data: {form: 'buscarProjetos', id: id},
+        data: {form: 'buscarProjetos', id: id, status: status},
         dataType: 'json',
         success: function(result){
-            console.log(result);
 
-            projetos_geral.push(result);
+            console.log(result);
 
             let div = document.getElementById('container-content');
             div.innerHTML = '';
@@ -558,7 +555,7 @@ $(document).on('submit', '#formProjetos', function(e){
     }
 });
 
-buscarProjetos(id_geral);
+buscarProjetos(id_geral, 'todas');
 
 function maisDetalhes(id){
 
@@ -652,5 +649,3 @@ function voltar(e){
     e.preventDefault();
     location.reload();
 }
-
-console.log(projetos_geral);

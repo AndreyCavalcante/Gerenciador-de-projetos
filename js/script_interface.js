@@ -14,11 +14,15 @@ function buscarProjetos(id, status){
             div.innerHTML = '';
 
             if('error' in result){
-                alertaTemporario(result.error, 3000);
 
                 let texto = `
                     <h1>Nenhum projeto encontrado!</h1><br>
                     <p>Crie um novo projeto no botão acima</p>
+                    <p>
+                        <button type="button" class="nav-button" onclick="formCriar(${id_geral})">
+                            <p class="text-button">+</p>
+                        </button>
+                    <p>
                 `;
 
                 div.innerHTML = texto;
@@ -652,17 +656,69 @@ function voltar(e){
     location.reload();
 }
 
-function pesqProjetos(id){
-
+$(document).on('submit', '#formPesq', function(e){
+    e.preventDefault()
+    
     pesq = $('#pesq').val();
 
     $.ajax({
         url: 'php/manterProjetos.php',
         method: 'POST',
-        data: {form: 'pesqProjetos', id: id, pesq: pesq},
+        data: {form: 'pesqProjeto', id: id_geral, pesq: pesq},
         dataType: 'json',
         success: function(result){
-            console.log(result);
+            
+            let div = document.getElementById('container-content');
+            div.innerHTML = '';
+
+            if('error' in result){
+
+                let texto = `
+                    <h1>Nenhum projeto encontrado!</h1><br>
+                    <p>Crie um novo projeto cliando no botão abaixo</p>
+                    <p>
+                        <button type="button" class="nav-button" onclick="formCriar(${id_geral})">
+                            <p class="text-button">+</p>
+                        </button>
+                    <p>
+                `;
+
+                div.innerHTML = texto;
+            }else{
+
+                result.forEach(function(projeto){
+                    const nome = projeto.nome_projeto;
+                    const descricao = projeto.descricao_projeto;
+                    const categoria = projeto.categoria_projeto;
+                    const status_projeto = projeto.status_projeto;
+
+                    let card = `
+                        <div class="card mb-3 " style="max-width: 540px;">
+                            <div class="row g-0" style="height: 100%;">
+                                <div class="col-md-4" style="display: flex; border-radius: 5px;">
+                                    <img src="imgs/${categoria}.png" class="img-fluid rounded-start" style="width: 100%; object-fit: cover; border-radius: 5px;" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${nome}</h5>
+                                        <p class="card-text">${descricao}</p>
+                                        <p class="card-text">${status_projeto}</p>
+                                        <p class="card-text">
+                                            <button type="button" class="btn signin btnedit" onclick="maisDetalhes(${projeto.id_projeto})">
+                                                Mais detalhes
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    div.innerHTML += card;
+
+                });
+
+            }
         },
         error: function(xhr, status, error){
             console.error(xhr.responseText);
@@ -670,4 +726,4 @@ function pesqProjetos(id){
             console.error(error);
         }
     });
-}
+})

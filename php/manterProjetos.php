@@ -16,6 +16,9 @@
         case 'maisDetalhes':
             maisDetalhes($conecta);
             break;
+        case 'pesqProjeto':
+            pesqProjeto($conecta);
+            break;
         default:
             break;
     }
@@ -154,6 +157,32 @@
             }
 
             echo json_encode(array_values($projetos));
+        }else{
+            echo json_encode(array('error' => 'Nenhum projeto encontrado!'));
+        }
+    }
+
+    function pesqProjeto($conecta){
+
+        $id = $_POST['id'];
+
+        $pesq = $_POST['pesq'];
+
+        $sql = "SELECT * FROM projetos WHERE nome_projeto LIKE '%$pesq%' AND id_usuario = $id";
+        
+
+        $result = $conecta->query($sql);
+
+        if($result->num_rows > 0){
+
+            $projetos = array();
+
+            while($row = $result->fetch_assoc()){
+
+               $projetos[] = $row; 
+            }
+
+            echo json_encode($projetos);
         }else{
             echo json_encode(array('error' => 'Nenhum projeto encontrado!'));
         }

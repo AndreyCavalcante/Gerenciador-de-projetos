@@ -381,6 +381,9 @@ function formCriar(id){
                 <input type="hidden" class="form-control input-form" value="${id}" name="id_usuario" id="id_usuario" required>
             </div>
             <div class="form-group">
+                <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" required>
+            </div>
+            <div class="form-group">
                 <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required></textarea>
             </div>
             <div class="form-group">
@@ -605,7 +608,6 @@ function maisDetalhes(id){
                         <div class="informacoes">
                             <div>
                                 <h1>${nome}</h1>
-                                <input type="text" value="Qualquer coisa">
                             </div>
                             <div class="div_descricao">
                                 <p class="descricao">${descricao}</p>

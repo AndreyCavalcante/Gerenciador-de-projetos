@@ -479,10 +479,19 @@ body{
     width: 50px;
     height: auto;
     border-radius: 5px;
+    transition: all 200ms ease-in-out;
+}
+
+.botao-voltar:after{
+    outline: none;
+}
+
+.botao-voltar:focus{
+    outline: none;
 }
 
 .botao-voltar img:hover{
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.524);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.682);
 }
 
 .botao-editar{
@@ -492,14 +501,23 @@ body{
     outline: none;
 }
 
+.botao-editar:focus{
+    outline: none;
+}
+
+.botao-editar:after{
+    outline: none;
+}
+
 .botao-editar img{
     width: 50px;
     height: auto;
     border-radius: 5px;
+    transition: all 200ms ease-in-out;
 }
 
 .botao-editar img:hover{
-    box-shadow: 0 0 10px #004cffa9;
+    box-shadow: 0 0 15px #004cffd6;
 }
 
 .informacoes{

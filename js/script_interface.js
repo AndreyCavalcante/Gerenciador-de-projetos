@@ -8,8 +8,6 @@ function buscarProjetos(id, status){
         dataType: 'json',
         success: function(result){
 
-            console.log(result);
-
             let div = document.getElementById('container-content');
             div.innerHTML = '';
 
@@ -389,19 +387,19 @@ function formCriar(id){
             <div class="form-group">
                 <h5>Categoria:</h5>
                 <div class="radio-group">
-                    <input type="radio" id="viagem" name="categoria" value="viagem" checked>
+                    <input type="radio" id="viagem" name="categoria" value="Viagem" checked>
                     <label for="viagem">Viagem</label>
                 </div>
                 <div class="radio-group">
-                    <input type="radio" id="construcao" name="categoria" value="construcao">
+                    <input type="radio" id="construcao" name="categoria" value="Construção">
                     <label for="construcao">Construção</label>
                 </div>
                 <div class="radio-group">
-                    <input type="radio" id="empreendimento" name="categoria" value="empreendimento">
+                    <input type="radio" id="empreendimento" name="categoria" value="Empreendimento">
                     <label for="empreendimento">Empreendimento</label>
                 </div>
                 <div class="radio-group">
-                    <input type="radio" id="outros" name="categoria" value="outros">
+                    <input type="radio" id="outros" name="categoria" value="Outros">
                     <label for="outros">Outros</label>
                 </div>
             </div>
@@ -576,7 +574,6 @@ function maisDetalhes(id){
         data: {form: 'maisDetalhes', id: id, id_usuario: id_geral},
         dataType: 'json',
         success: function(result){
-            console.log(result);
 
             let container = document.getElementById('container-content');
 
@@ -601,7 +598,7 @@ function maisDetalhes(id){
                             </button>
                         </div>
                         <div class="div-botao-editar">
-                            <button type="button" class="botao-editar" onclick="editarProjeto(${projeto.id_projeto})">
+                            <button type="button" class="botao-editar" onclick="criarEditarProjeto(${projeto.id_projeto})">
                                 <img src="imgs/editar.png" class="img-editar" alt="Editar" text="Editar">
                             </button>
                         </div>
@@ -738,7 +735,79 @@ $(document).on('submit', '#formPesq', function(e){
     });
 })
 
-function editarProjeto(id_projeto){
+function gerarRadio(categoria){
+    let viagem = `
+        <div class="radio-group">
+            <input type="radio" id="viagem" name="categoria" value="Viagem">
+            <label for="viagem">Viagem</label>
+        </div>
+    `;
+    let construcao = `
+        <div class="radio-group">
+            <input type="radio" id="construcao" name="categoria" value="Construção">
+            <label for="construcao">Construção</label>
+        </div>
+    `;
+    let empreendimento = `
+        <div class="radio-group">
+            <input type="radio" id="empreendimento" name="categoria" value="Empreendimento">
+            <label for="empreendimento">Empreendimento</label>
+        </div>
+    `;
+    let outros = `
+        <div class="radio-group">
+            <input type="radio" id="outros" name="categoria" value="Outros">
+            <label for="outros">Outros</label>
+        </div>
+    `;
+    switch(categoria){
+        case 'viagem':
+            viagem = `
+                <div class="radio-group">
+                    <input type="radio" id="viagem" name="categoria" value="Viagem" checked>
+                    <label for="viagem">Viagem</label>
+                </div>
+            `;
+            break;
+        case 'construcao':
+            construcao = `
+                <div class="radio-group">
+                    <input type="radio" id="construcao" name="categoria" value="Construção" checked>
+                    <label for="construcao">Construção</label>
+                </div>
+            `;           
+            break;
+        case 'empreendimento':
+            empreendimento = `
+                <div class="radio-group">
+                    <input type="radio" id="empreendimento" name="categoria" value="Empreendimento" checked>
+                    <label for="empreendimento">Empreendimento</label>
+                </div>
+            `;
+            break;
+        case 'outros':
+            outros = `
+                <div class="radio-group">
+                    <input type="radio" id="outros" name="categoria" value="Outros" checked>
+                    <label for="outros">Outros</label>
+                </div>
+            `;
+            break;
+        default:
+            break;
+    }
+    
+    let retorno = `
+        ${viagem}
+        ${construcao}
+        ${empreendimento}
+        ${outros}
+    `;
+
+    return retorno;
+}
+
+function criarEditarProjeto(id_projeto){
 
     $.ajax({
         url: 'php/manterProjetos.php',
@@ -746,12 +815,115 @@ function editarProjeto(id_projeto){
         data: {form: 'maisDetalhes', id: id_projeto, id_usuario: id_geral},
         dataType: 'json',
         success: function(result){
-            console.log(result);
+            
+            let div = document.getElementById('container-content');
+
+            let inputs_valores = ``;
+
+            let investimentoF = result[0].investimento;
+
+            let investimento = parseFloat(investimentoF);
+
+            let categoria_html = gerarRadio(result[0].categoria);
+
+            result.forEach( function(projetos){
+                const valores = projetos.valores;
+
+                valores.forEach(function(valores){
+                    const id = valores.id_valor;
+                    const destino = valores.destino;
+                    const valorF = valores.valor;
+                    const valor = parseFloat(valorF);
+
+                    inputs_valores += `
+                        <div class="form-group">
+                            <div class="item-container">
+                                <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
+                                <div class="item-inputs">
+                                    <input type="hidden" value="${id}" id="id_valor[]">
+                                    <input type="text" name="nome_valor[]" class="form-control input-form" placeholder="Destino" value="${destino}" required>
+                                    <input type="number" name="valor_item[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" value="${valor.toFixed(2)}" required>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            let form = `
+                <form id="formAtualizarProjeto">
+                    <h3>Novo projeto</h3>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control input-form" value="${id_geral}" name="id_usuario" id="id_usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <h5>Categoria:</h5>
+                        ${categoria_html}
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control input-form" id="investimento" name="investimento" value="${investimento.toFixed(2)}" step="1" min="1" max="99000000.00" placeholder="Investimento do Projeto" required>
+                        <small id="smallInvest"></small>
+                    </div>
+                    <div id="item-container" class="form-group">
+                        ${inputs_valores}
+                        
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn signin btnedit">Salvar Alterações</button>
+                    </div>
+                </form>
+                <div class="justify-content-center text-center align-items-center">
+                    <p>Novo gasto: </p>
+                    <div class="d-flex justify-content-center text-center">
+                        <button type="button" class="nav-button contrario" onclick="adicionarItem(event)">
+                            <p class="text-button">+</p>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            div.innerHTML = form;
+
+            document.getElementById('investimento').addEventListener('change', validarValores);
+            document.querySelectorAll('.valor-item').forEach(input => {
+                input.addEventListener('change', validarValores);
+            });
+
+
         },
         error: function(xhr, status, error){
             console.error(xhr.responseText);
             console.error(status);
             console.error(error);
         }
+    });
+}
+
+function adicionarItem(event){
+    event.preventDefault();
+
+    let div = document.getElementById('item-container');
+
+    let item = `
+        <div class="form-group">
+            <div class="item-container">
+                <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
+                <div class="item-inputs">
+                    <input type="text" name="novo_valor[]" class="form-control input-form" placeholder="Destino" required>
+                    <input type="number" name="novo_valor[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" required>
+                </div>
+            </div>
+        </div>
+    `;
+
+    div.insertAdjacentHTML('beforeend', item);
+    document.querySelectorAll('.valor-item').forEach(input => {
+        input.addEventListener('change', validarValores);
     });
 }

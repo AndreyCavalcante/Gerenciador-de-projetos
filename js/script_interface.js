@@ -501,6 +501,8 @@ function validarValores(){
         smallInvest.innerText = "Cuidado, os gastos estão no limite do investimento";
         validacoesValores['invest'] = true;
     }
+
+    console.log(validacoesValores);
 }
 
 $(document).on('submit', '#formProjetos', function(e){
@@ -761,7 +763,7 @@ function gerarRadio(categoria){
         </div>
     `;
     switch(categoria){
-        case 'viagem':
+        case 'Viagem':
             viagem = `
                 <div class="radio-group">
                     <input type="radio" id="viagem" name="categoria" value="Viagem" checked>
@@ -769,7 +771,7 @@ function gerarRadio(categoria){
                 </div>
             `;
             break;
-        case 'construcao':
+        case 'Construção':
             construcao = `
                 <div class="radio-group">
                     <input type="radio" id="construcao" name="categoria" value="Construção" checked>
@@ -777,7 +779,7 @@ function gerarRadio(categoria){
                 </div>
             `;           
             break;
-        case 'empreendimento':
+        case 'Empreendimento':
             empreendimento = `
                 <div class="radio-group">
                     <input type="radio" id="empreendimento" name="categoria" value="Empreendimento" checked>
@@ -785,7 +787,7 @@ function gerarRadio(categoria){
                 </div>
             `;
             break;
-        case 'outros':
+        case 'Outros':
             outros = `
                 <div class="radio-group">
                     <input type="radio" id="outros" name="categoria" value="Outros" checked>
@@ -807,6 +809,45 @@ function gerarRadio(categoria){
     return retorno;
 }
 
+function atualizarValores(){
+    let valores = $('input[name="valor_item[]"]').map(function(){
+        return $(this).val();
+    }).get();
+
+    let novos_valores = $('input[name="novo_valor[]"]').map(function(){
+        return $(this).val();
+    });
+
+    let smallInvest = document.getElementById('smallInvest');
+    let investimentoInput = document.getElementById('investimento');
+    let investimento = $('#investimento').val();
+
+    let velha_soma = valores.reduce((acc, val) => acc + parseFloat(val || 0), 0);
+
+    let nova_soma = novos_valores.reduce((acc, val) => acc + parseFloat(val || 0), 0);
+
+    let soma = velha_soma + nova_soma; 
+
+    if(soma > investimento){
+        investimentoInput.style.borderColor = "red";
+        smallInvest.style.color = "red";
+        smallInvest.innerText = "Valor insuficiente, aumente o investimento ou economize mais";
+        validacoesValores['invest'] = false;
+    }else if(soma < investimento){
+        investimentoInput.style.borderColor = "green";
+        smallInvest.style.color = "green";
+        smallInvest.innerText = "";
+        validacoesValores['invest'] = true;
+    }else if(soma == investimento){
+        investimentoInput.style.borderColor = "yellow";
+        smallInvest.style.color = "yellow";
+        smallInvest.innerText = "Cuidado, os gastos estão no limite do investimento";
+        validacoesValores['invest'] = true;
+    }
+
+    console.log(validacoesValores);
+}
+
 function criarEditarProjeto(id_projeto){
 
     $.ajax({
@@ -815,6 +856,7 @@ function criarEditarProjeto(id_projeto){
         data: {form: 'maisDetalhes', id: id_projeto, id_usuario: id_geral},
         dataType: 'json',
         success: function(result){
+            console.log(result);
             
             let div = document.getElementById('container-content');
 
@@ -823,6 +865,9 @@ function criarEditarProjeto(id_projeto){
             let investimentoF = result[0].investimento;
 
             let investimento = parseFloat(investimentoF);
+            let nome = result[0].nome_projeto;
+            let descricao = result[0].descricao;
+
 
             let categoria_html = gerarRadio(result[0].categoria);
 
@@ -855,12 +900,13 @@ function criarEditarProjeto(id_projeto){
                     <h3>Novo projeto</h3>
                     <div class="form-group">
                         <input type="hidden" class="form-control input-form" value="${id_geral}" name="id_usuario" id="id_usuario" required>
+                        <input type="hidden" class="form-control input-form" value="${id_projeto}" name="id_projeto" id="id_projeto" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" required>
+                        <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" value="${nome}"  required>
                     </div>
                     <div class="form-group">
-                        <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required></textarea>
+                        <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required>${descricao}</textarea>
                     </div>
                     <div class="form-group">
                         <h5>Categoria:</h5>
@@ -872,7 +918,9 @@ function criarEditarProjeto(id_projeto){
                     </div>
                     <div id="item-container" class="form-group">
                         ${inputs_valores}
-                        
+                    </div>
+                    <div id="itens-novos-container" class="form-group">
+
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn signin btnedit">Salvar Alterações</button>
@@ -908,14 +956,14 @@ function criarEditarProjeto(id_projeto){
 function adicionarItem(event){
     event.preventDefault();
 
-    let div = document.getElementById('item-container');
+    let div = document.getElementById('itens-novos-container');
 
     let item = `
         <div class="form-group">
             <div class="item-container">
                 <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
                 <div class="item-inputs">
-                    <input type="text" name="novo_valor[]" class="form-control input-form" placeholder="Destino" required>
+                    <input type="text" name="novo_destino[]" class="form-control input-form" placeholder="Destino" required>
                     <input type="number" name="novo_valor[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" required>
                 </div>
             </div>

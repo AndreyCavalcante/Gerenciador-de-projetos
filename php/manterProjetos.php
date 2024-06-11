@@ -190,3 +190,8 @@
             echo json_encode(array('error' => 'Nenhum projeto encontrado!'));
         }
     }
+
+    function atualizarProjeto($conecta){
+
+        
+    }

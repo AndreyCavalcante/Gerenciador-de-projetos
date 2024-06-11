@@ -461,6 +461,13 @@ body{
     margin: 1px;
 }
 
+.div-botao-editar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1px;
+}
+
 .botao-voltar {
     background: none;
     border: none; 
@@ -471,6 +478,28 @@ body{
 .botao-voltar img {
     width: 50px;
     height: auto;
+    border-radius: 5px;
+}
+
+.botao-voltar img:hover{
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.524);
+}
+
+.botao-editar{
+    background: none;
+    border: none; 
+    cursor: pointer;
+    outline: none;
+}
+
+.botao-editar img{
+    width: 50px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.botao-editar img:hover{
+    box-shadow: 0 0 10px #004cffa9;
 }
 
 .informacoes{

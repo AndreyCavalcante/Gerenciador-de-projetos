@@ -573,7 +573,7 @@ function maisDetalhes(id){
     $.ajax({
         url: 'php/manterProjetos.php',
         method: 'POST',
-        data: {form: 'maisDetalhes', id: id},
+        data: {form: 'maisDetalhes', id: id, id_usuario: id_geral},
         dataType: 'json',
         success: function(result){
             console.log(result);
@@ -600,9 +600,9 @@ function maisDetalhes(id){
                                 <img src="imgs/voltar.png" alt="Voltar" text="Voltar">
                             </button>
                         </div>
-                        <div>
+                        <div class="div-botao-editar">
                             <button type="button" class="botao-editar" onclick="editarProjeto(${projeto.id_projeto})">
-
+                                <img src="imgs/editar.png" class="img-editar" alt="Editar" text="Editar">
                             </button>
                         </div>
                         <div class="informacoes">
@@ -738,6 +738,20 @@ $(document).on('submit', '#formPesq', function(e){
     });
 })
 
-function editarProjeto(){
+function editarProjeto(id_projeto){
 
+    $.ajax({
+        url: 'php/manterProjetos.php',
+        method: 'POST',
+        data: {form: 'maisDetalhes', id: id_projeto, id_usuario: id_geral},
+        dataType: 'json',
+        success: function(result){
+            console.log(result);
+        },
+        error: function(xhr, status, error){
+            console.error(xhr.responseText);
+            console.error(status);
+            console.error(error);
+        }
+    });
 }

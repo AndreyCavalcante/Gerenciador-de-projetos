@@ -37,10 +37,10 @@ function buscarProjetos(id, status){
                     let card = `
                         <div class="card mb-3 " style="max-width: 540px;">
                             <div class="row g-0" style="height: 100%;">
-                                <div class="col-md-4" style="display: flex; border-radius: 5px;">
+                                <div class="col-md-5" style="display: flex; border-radius: 5px;">
                                     <img src="imgs/${categoria}.png" class="img-fluid rounded-start" style="width: 100%; object-fit: cover; border-radius: 5px;" alt="...">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="card-body">
                                         <h5 class="card-title">${nome}</h5>
                                         <p class="card-text">${descricao}</p>
@@ -54,6 +54,7 @@ function buscarProjetos(id, status){
                                 </div>
                             </div>
                         </div>
+
                     `;
 
                     div.innerHTML += card;
@@ -380,9 +381,6 @@ function formCriar(id){
                 <input type="hidden" class="form-control input-form" value="${id}" name="id_usuario" id="id_usuario" required>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" required>
-            </div>
-            <div class="form-group">
                 <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required></textarea>
             </div>
             <div class="form-group">
@@ -409,11 +407,14 @@ function formCriar(id){
                 <small id="smallInvest"></small>
             </div>
             <div id="item-container" class="form-group">
-                <div class="item-container">
-                    <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
-                    <div class="item-inputs">
-                        <input type="text" name="nome_valor[]" class="form-control input-form" placeholder="Destino" required>
-                        <input type="number" name="valor_item[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" required>
+                <div class="form-group">
+                    <div class="item-container">
+                        <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
+                        <div class="item-inputs">
+                            <input type="hidden">
+                            <input type="text" name="nome_valor[]" class="form-control input-form" placeholder="Destino" required>
+                            <input type="number" name="valor_item[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" required>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -463,6 +464,7 @@ function novoItem(event){
 }
 
 function removerItem(button) {
+    
     button.parentElement.parentElement.remove();
     validarValores();
 }
@@ -595,11 +597,17 @@ function maisDetalhes(id){
                                 <img src="imgs/voltar.png" alt="Voltar" text="Voltar">
                             </button>
                         </div>
+                        <div>
+                            <button type="button" class="botao-editar" onclick="editarProjeto(${projeto.id_projeto})">
+
+                            </button>
+                        </div>
                         <div class="informacoes">
                             <div>
                                 <h1>${nome}</h1>
+                                <input type="text" value="Qualquer coisa">
                             </div>
-                            <div>
+                            <div class="div_descricao">
                                 <p class="descricao">${descricao}</p>
                             </div>
                             <div>
@@ -727,3 +735,7 @@ $(document).on('submit', '#formPesq', function(e){
         }
     });
 })
+
+function editarProjeto(){
+
+}

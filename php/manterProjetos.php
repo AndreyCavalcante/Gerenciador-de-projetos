@@ -122,7 +122,7 @@
 
         $sql = "SELECT p.id_projeto AS id_projeto, p.nome_projeto AS nome_projeto, p.descricao_projeto AS descricao, 
         p.categoria_projeto AS categoria, p.investimento AS investimento, p.status_projeto AS status_projeto, 
-        v.destino AS destino, v.valor AS valor
+        v.destino AS destino, v.valor AS valor, v.id_valor AS id_valor
         FROM projetos p
         INNER JOIN valores v ON v.id_projeto = p.id_projeto
         WHERE p.id_projeto = $id";
@@ -151,6 +151,7 @@
                 }
 
                 $projetos[$id_projeto]['valores'][] = array(
+                    "id_valor" => $row['id_valor'],
                     "destino" => $row['destino'],
                     "valor" => $row['valor']
                 );

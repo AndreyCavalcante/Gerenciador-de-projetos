@@ -86,7 +86,7 @@ function buscarUser(id){
         data:{form:'buscarUser',id: id},
         dataType:'json',
         success: function(result){
-            
+
             let a = document.getElementById('a-nav');
             let img = document.getElementById('img-user');
 
@@ -809,6 +809,39 @@ function gerarRadio(categoria){
     return retorno;
 }
 
+function gerarRadioStatus(categoria){
+
+    let radio = ``;
+
+    if(categoria === 'Concluído'){
+        radio = `
+            <h5>Status do projeto:</h5>
+            <div class="radio-group">
+                <input type="radio" id="Conculído" name="status_projeto_radio" value="Concluído" checked>
+                <label for="viagem">Concluído</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="Em_Andamento" name="status_projeto_radio" value="Em Andamento">
+                <label for="viagem">Em Andamento</label>
+            </div>
+        `;
+    }else{
+        radio = `
+            <h5>Status do projeto:</h5>
+            <div class="radio-group">
+                <input type="radio" id="Conculído" name="status_projeto_radio" value="Concluído">
+                <label for="viagem">Concluído</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="Em_Andamento" name="status_projeto_radio" value="Em Andamento" checked>
+                <label for="viagem">Em Andamento</label>
+            </div>
+        `;
+    }
+
+    return radio;
+}
+
 function atualizarValores(){
     let valores = $('input[name="valor_item[]"]').map(function(){
         return $(this).val();
@@ -868,11 +901,14 @@ function criarEditarProjeto(id_projeto){
             let nome = result[0].nome_projeto;
             let descricao = result[0].descricao;
 
+            let status_projeto = result[0].status;
+
 
             let categoria_html = gerarRadio(result[0].categoria);
 
             result.forEach( function(projetos){
                 const valores = projetos.valores;
+                const status_projeto = projetos.status;
 
                 valores.forEach(function(valores){
                     const id = valores.id_valor;
@@ -907,6 +943,9 @@ function criarEditarProjeto(id_projeto){
                     </div>
                     <div class="form-group">
                         <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required>${descricao}</textarea>
+                    </div>
+                    <div class="form-group">
+                        ${gerarRadioStatus(status_projeto)}
                     </div>
                     <div class="form-group">
                         <h5>Categoria:</h5>
@@ -979,6 +1018,7 @@ function adicionarItem(event){
 $(document).on('submit', '#formAtualizarProjeto', function(e){
     e.preventDefault();
 
+    let id_projeto = $('#id_projeto').val();
     let id_usuario = $('#id_usuario').val();
     let nome_projeto = $('#nome_projeto').val();
     let descricao = $('#descricao').val();
@@ -993,6 +1033,16 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
         }
     }
 
+    let status_projeto_radio = document.getElementsByName('status_projeto_radio');
+    let status_projeto_value = "";
+
+    for (let i = 0; i < status_projeto_radio.length; i++) {
+        if (status_projeto_radio[i].checked) {
+            status_projeto_value = status_projeto_radio[i].value;
+            break;
+        }
+    }
+
     let investimento = $('#investimento').val();
 
     let nome_valor = $('input[name="nome_valor[]"]').map(function(){
@@ -1003,6 +1053,46 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
         return $(this).val();
     }).get();
 
+    let novos_destinos = $('input[name="novos_destinos[]"]').map(function(){
+        return $(this).val();
+    }).get() || "";
 
+    let novos_valores = $('input[name="novo_valor[]"]').map(function(){
+        return $(this).val();
+    }).get() || "";
+
+    atualizarValores();
+
+    if(validacoesValores['invest'] === false){
+        alertaTemporario('Investimento insulficiente. Tente economizar mais ou aumante o investimento', 3000);
+    }else{
+        $.ajax({
+            url: 'php/manterProjetos.php',
+            method: 'POST',
+            data: {
+                form: 'atualizarProjeto',
+                id_projeto: id_projeto,
+                id_user: id_usuario,
+                nome_projeto: nome_projeto,
+                descricao: descricao,
+                categoria: categoria_val,
+                status: status_projeto_value,
+                investimento: investimento,
+                nome_valor: nome_valor,
+                valores: valores,
+                novos_destinos: novos_destinos,
+                novos_valores: novos_valores
+            },
+            dataType: 'json',
+            success: function(result){
+                console.log(result);
+            },
+            error: function(xhr, status, error){
+                console.error(xhr.responseText);
+                console.error(status);
+                console.error(error);
+            }
+        });
+    }
 
 });

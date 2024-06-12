@@ -816,7 +816,7 @@ function atualizarValores(){
 
     let novos_valores = $('input[name="novo_valor[]"]').map(function(){
         return $(this).val();
-    });
+    }).get() || []; 
 
     let smallInvest = document.getElementById('smallInvest');
     let investimentoInput = document.getElementById('investimento');
@@ -824,7 +824,7 @@ function atualizarValores(){
 
     let velha_soma = valores.reduce((acc, val) => acc + parseFloat(val || 0), 0);
 
-    let nova_soma = novos_valores.reduce((acc, val) => acc + parseFloat(val || 0), 0);
+    let nova_soma = novos_valores.length ? novos_valores.reduce((acc, val) => acc + parseFloat(val || 0), 0) : 0;
 
     let soma = velha_soma + nova_soma; 
 
@@ -938,9 +938,9 @@ function criarEditarProjeto(id_projeto){
 
             div.innerHTML = form;
 
-            document.getElementById('investimento').addEventListener('change', validarValores);
+            document.getElementById('investimento').addEventListener('change', atualizarValores);
             document.querySelectorAll('.valor-item').forEach(input => {
-                input.addEventListener('change', validarValores);
+                input.addEventListener('change', atualizarValores);
             });
 
 
@@ -964,14 +964,45 @@ function adicionarItem(event){
                 <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
                 <div class="item-inputs">
                     <input type="text" name="novo_destino[]" class="form-control input-form" placeholder="Destino" required>
-                    <input type="number" name="novo_valor[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" required>
+                    <input type="number" name="novo_valor[]" class="form-control input-form novo_valor" step="1" min="1" max="99000000.00" placeholder="Valor" required>
                 </div>
             </div>
         </div>
     `;
 
     div.insertAdjacentHTML('beforeend', item);
-    document.querySelectorAll('.valor-item').forEach(input => {
-        input.addEventListener('change', validarValores);
+    document.querySelectorAll('.novo_valor').forEach(input => {
+        input.addEventListener('change', atualizarValores);
     });
 }
+
+$(document).on('submit', '#formAtualizarProjeto', function(e){
+    e.preventDefault();
+
+    let id_usuario = $('#id_usuario').val();
+    let nome_projeto = $('#nome_projeto').val();
+    let descricao = $('#descricao').val();
+
+    let categoria = document.getElementsByName('categoria');
+    let categoria_val;
+
+    for (let i = 0; i < categoria.length; i++) {
+        if (categoria[i].checked) {
+            categoria_val = categoria[i].value;
+            break;
+        }
+    }
+
+    let investimento = $('#investimento').val();
+
+    let nome_valor = $('input[name="nome_valor[]"]').map(function(){
+        return $(this).val();
+    }).get();
+
+    let valores = $('input[name="valor_item[]"]').map(function(){
+        return $(this).val();
+    }).get();
+
+
+
+});

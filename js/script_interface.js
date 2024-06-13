@@ -363,7 +363,8 @@ $(document).on('submit', '#formAtualizar', function(e){
             console.log('deu certo malandro')
         },
         error: function(xhr, status, error){ 
-            console.error(xhr.responseText); 
+            console.error(xhr.responseText);
+
         }
     });
     
@@ -435,9 +436,9 @@ function formCriar(id){
 
     container.innerHTML = form;
 
-    document.getElementById('investimento').addEventListener('change', validarValores);
+    document.getElementById('investimento').addEventListener('change', atualizarValores);
     document.querySelectorAll('.valor-item').forEach(input => {
-        input.addEventListener('change', validarValores);
+        input.addEventListener('change', atualizarValores);
     });
 }
 
@@ -460,21 +461,20 @@ function novoItem(event){
 
     div.insertAdjacentHTML('beforeend', item);
     document.querySelectorAll('.valor-item').forEach(input => {
-        input.addEventListener('change', validarValores);
+        input.addEventListener('change', atualizarValores);
     });
 }
 
 function removerItem(button) {
-    
     button.parentElement.parentElement.remove();
-    validarValores();
+    atualizarValores();
 }
 
 const validacoesValores = {
     invest: false
 };
 
-function validarValores(){
+function atualizarValores(){
     let valores = $('input[name="valor_item[]"]').map(function(){
         return $(this).val();
     }).get();
@@ -845,7 +845,7 @@ function gerarRadioStatus(categoria){
 function atualizarValores(){
     let valores = $('input[name="valor_item[]"]').map(function(){
         return $(this).val();
-    }).get();
+    }).get() || [];
 
     let novos_valores = $('input[name="novo_valor[]"]').map(function(){
         return $(this).val();
@@ -919,9 +919,9 @@ function criarEditarProjeto(id_projeto){
                     inputs_valores += `
                         <div class="form-group">
                             <div class="item-container">
-                                <button type="button" class="nav-button remove" onclick="removerItem(this)"><p class="p-button">-</p></button>
+                                <button type="button" class="nav-button remove" onclick="removerValorAntigo(this)"><p class="p-button">-</p></button>
                                 <div class="item-inputs">
-                                    <input type="hidden" value="${id}" id="id_valor[]">
+                                    <input type="hidden" value="${id}" id="id_valor[]" class="id_valor" name="id_valor[]">
                                     <input type="text" name="nome_valor[]" class="form-control input-form" placeholder="Destino" value="${destino}" required>
                                     <input type="number" name="valor_item[]" class="form-control input-form valor-item" step="1" min="1" max="99000000.00" placeholder="Valor" value="${valor.toFixed(2)}" required>
                                 </div>
@@ -1015,6 +1015,24 @@ function adicionarItem(event){
     });
 }
 
+function removerValorAntigo(button){
+    
+    let item_container = button.parentElement;
+
+    let id_str = item_container.querySelector('.id_valor').value;
+
+    let id = Number(id_str);
+
+    ids_deletados.push(id);
+
+    console.log(ids_deletados);
+
+    button.parentElement.parentElement.remove();
+    atualizarValores();
+}
+
+const ids_deletados = [];
+
 $(document).on('submit', '#formAtualizarProjeto', function(e){
     e.preventDefault();
 
@@ -1045,18 +1063,18 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
 
     let investimento = $('#investimento').val();
 
+    let id_valores = $('#input[name="id_valor"]').map(function(){
+        return $(this).val();
+    }).get() || "";
     let nome_valor = $('input[name="nome_valor[]"]').map(function(){
         return $(this).val();
-    }).get();
-
+    }).get() || "";
     let valores = $('input[name="valor_item[]"]').map(function(){
         return $(this).val();
-    }).get();
-
+    }).get() || "";
     let novos_destinos = $('input[name="novos_destinos[]"]').map(function(){
         return $(this).val();
     }).get() || "";
-
     let novos_valores = $('input[name="novo_valor[]"]').map(function(){
         return $(this).val();
     }).get() || "";
@@ -1078,14 +1096,16 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
                 categoria: categoria_val,
                 status: status_projeto_value,
                 investimento: investimento,
+                id_valor: id_valores,
                 nome_valor: nome_valor,
                 valores: valores,
                 novos_destinos: novos_destinos,
-                novos_valores: novos_valores
+                novos_valores: novos_valores,
+                id_deletados: id_deletados
             },
             dataType: 'json',
             success: function(result){
-                console.log(result);
+                alertaTemporario(result.mensage, 3000);
             },
             error: function(xhr, status, error){
                 console.error(xhr.responseText);

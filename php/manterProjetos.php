@@ -19,6 +19,9 @@
         case 'pesqProjeto':
             pesqProjeto($conecta);
             break;
+        case 'atualizarProjeto':
+            atualizarProjeto($conecta);
+            break;
         default:
             break;
     }
@@ -193,5 +196,75 @@
 
     function atualizarProjeto($conecta){
 
+        $id_projeto = $_POST['id_projeto'];
+        $id_user = $_POST['id_user'];
+        $nome_projeto = $_POST['nome_projeto'];
+        $descricao = $_POST['descricao'];
+        $investimento  = $_POST['investimento'];
+        $categoria = $_POST['categoria'];
+        $status = $_POST['status'];
         
+        $id_valor = isset($_POST['id_valor']) ? $_POST['id_valor'] : [];
+        $nome_valor = isset($_POST['nome_valor']) ? $_POST['nome_valor'] : [];
+        $valores = isset($_POST['valores']) ? $_POST['valores'] : [];
+
+        $novos_destinos = isset($_POST['novos_destinos']) ? $_POST['novos_destinos'] : [];
+        $novos_valores = isset($_POST['novos_valores']) ? $_POST['novos_valores'] : [];
+        $ids_deletados = isset($_POST['id_deletados']) ? $_POST['id_deletados'] : [];
+        
+
+        $sql = "UPDATE projetos SET nome_projeto = '$nome_projeto' , descricao_projeto = '$descricao' ,
+                categoria_projeto = '$categoria' ,investimento = $investimento , status_projeto = '$status'
+                WHERE id_projeto = $id_projeto AND id_usuario = $id_user";
+
+        if($conecta->query($sql) === true){
+
+            if(count($id_valor) > 0){
+                for($i = 0; $i < count($id_valor); $i++){
+                    $valor_id = $id_valor[$i];
+                    $valor = $valores[$i];
+                    $destino = $nome_valor[$i];
+
+                    $sql_valores = "UPDATE valores SET valor = $valor, destino = '$destino' WHERE id_valor = $valor_id";
+
+                    if($conecta->query($sql_valores) !== true){
+                        echo json_encode(array('error' => 'Erro ao tentar atualizar valor!'));
+                        return;
+                    }
+                }
+            }
+
+            if (count($novos_valores) > 0) {
+                for ($i = 0; $i < count($novos_valores); $i++) {
+                    $novo_valor = $novos_valores[$i];
+                    $novo_destino = $novos_destinos[$i];
+    
+                    $sql_novos_valores = "INSERT INTO valores (valor, destino, id_projeto) VALUES ('$novo_valor', '$novo_destino', $id_projeto)";
+    
+                    if ($conecta->query($sql_novos_valores) !== true) {
+                        echo json_encode(array('error' => 'Erro ao inserir novo Valor e Destino: '));
+                        return;
+                    }
+                }
+            }
+
+            if (count($ids_deletados) > 0) {
+                for ($i = 0; $i < count($ids_deletados); $i++) {
+                    $id_deletado = $ids_deletados[$i];
+    
+                    $sql_deletar = "DELETE FROM valores WHERE id_valor = $id_deletado";
+    
+                    if ($conecta->query($sql_deletar) !== true) {
+                        echo json_encode(array('error' => 'Erro ao deletar Valor: '));
+                        return;
+                    }
+                }
+            }
+
+
+
+            echo json_encode(array('mensagem' => 'Dados do projeto atualizados com sucesso'));
+        }else{
+            echo json_encode(array('error' => 'Não funcionou MALANDRO'));
+        }
     }

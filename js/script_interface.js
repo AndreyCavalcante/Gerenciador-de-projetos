@@ -1015,6 +1015,8 @@ function adicionarItem(event){
     });
 }
 
+const ids_deletados = [];
+
 function removerValorAntigo(button){
     
     let item_container = button.parentElement;
@@ -1031,12 +1033,14 @@ function removerValorAntigo(button){
     atualizarValores();
 }
 
-const ids_deletados = [];
 
 $(document).on('submit', '#formAtualizarProjeto', function(e){
     e.preventDefault();
 
     let id_projeto = $('#id_projeto').val();
+
+    let id_projeto_int = Number(id_projeto);
+
     let id_usuario = $('#id_usuario').val();
     let nome_projeto = $('#nome_projeto').val();
     let descricao = $('#descricao').val();
@@ -1063,21 +1067,21 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
 
     let investimento = $('#investimento').val();
 
-    let id_valores = $('#input[name="id_valor"]').map(function(){
+    let id_valores = $('input[name="id_valor[]"]').map(function(){
         return $(this).val();
-    }).get() || "";
+    }).get() || [];
     let nome_valor = $('input[name="nome_valor[]"]').map(function(){
         return $(this).val();
-    }).get() || "";
+    }).get() || [];
     let valores = $('input[name="valor_item[]"]').map(function(){
         return $(this).val();
-    }).get() || "";
-    let novos_destinos = $('input[name="novos_destinos[]"]').map(function(){
+    }).get() || [];
+    let novos_destinos = $('input[name="novo_destino[]"]').map(function(){
         return $(this).val();
-    }).get() || "";
+    }).get() || '';
     let novos_valores = $('input[name="novo_valor[]"]').map(function(){
         return $(this).val();
-    }).get() || "";
+    }).get() || '';
 
     atualizarValores();
 
@@ -1101,11 +1105,21 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
                 valores: valores,
                 novos_destinos: novos_destinos,
                 novos_valores: novos_valores,
-                id_deletados: id_deletados
+                id_deletados: ids_deletados
             },
             dataType: 'json',
             success: function(result){
-                alertaTemporario(result.mensage, 3000);
+                
+                if('error' in result){
+                    alertaTemporario(result.error, 3000);
+                }else{
+                    alertaTemporario(result.mensagem, 3000);
+                    setTimeout(function(){
+                        maisDetalhes(id_projeto_int);
+                    }, 3000);
+                }
+
+
             },
             error: function(xhr, status, error){
                 console.error(xhr.responseText);

@@ -35,17 +35,18 @@
                     <div class="d-flex text-center justify-content-center">
                         <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
                             <div id="form-container" class="form-container">
-                                <form id="formIndex" action="php/login.php" method="POST" class="form-horizontal">
+                                <form id="formIndex" class="form-horizontal">
                                     <h3 class="title">Bem-vindo</h3>
                                     <span class="description">Ao seu melhor gestor de projetos</span>
                                     <div class="form-group">
                                         <input class="form-control" name="email" id="email" type="email" placeholder="Seu email">
+                                        <small id="smallEmail"></small>
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control" name="senha" id="senha" type="password" placeholder="Sua senha">
                                     </div>
                                     <button type="submit" class="btn signin">Entrar</button>
-                                    <button type="button" class="btn signin" onclick="formCadastrar(1)">Resgistra-se</button>
+                                    <a href="cadastro_page.php"><button type="button" class="btn signin">Resgistra-se</button></a>
                                 </form>
                             </div>
                         </div>

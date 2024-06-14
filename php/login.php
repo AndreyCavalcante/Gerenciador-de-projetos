@@ -27,10 +27,10 @@
 
             $_SESSION['imagem'] = $imagem; 
         }
+        echo json_encode($status = true);
 
-        header('location: ../perfil.php');
     }else{
         session_unset();
         session_destroy();
-        header('location: ../index.php');
+        echo json_encode($status = false);
     }

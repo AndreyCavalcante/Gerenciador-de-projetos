@@ -95,13 +95,13 @@
             $sql .= "nome_usuario = '$nome', ";
         }
         if (!empty($sobrenome)){
-            $sql .= "sobrenome_usuario = $sobrenome, ";
+            $sql .= "sobrenome_usuario = '$sobrenome', ";
         }
         if(!empty($email)){
-            $sql .= "email = $email, ";
+            $sql .= "email = '$email', ";
         }
         if(!empty($senha)){
-            $sql .= "senha = $senha, ";
+            $sql .= "senha = '$senha', ";
         }
         if (!empty($_FILES['picture__input']['name'])) {
             $imagem_nome = $_FILES['picture__input']['name'];

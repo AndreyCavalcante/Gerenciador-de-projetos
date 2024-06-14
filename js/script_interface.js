@@ -365,8 +365,10 @@ $(document).on('submit', '#formAtualizar', function(e){
         contentType: false,
         processData: false,
         success: function(result){
-            location.reload();
             alertaTemporario(result, 2000);
+            setTimeout( function(){
+                location.reload();
+            },2000);
             $('#formAtualizar')[0].reset();
             console.log('deu certo malandro')
         },
@@ -715,10 +717,10 @@ $(document).on('submit', '#formPesq', function(e){
                     let card = `
                         <div class="card mb-3 " style="max-width: 540px;">
                             <div class="row g-0" style="height: 100%;">
-                                <div class="col-md-4" style="display: flex; border-radius: 5px;">
+                                <div class="col-md-5" style="display: flex; border-radius: 5px;">
                                     <img src="imgs/${categoria}.png" class="img-fluid rounded-start" style="width: 100%; object-fit: cover; border-radius: 5px;" alt="...">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="card-body">
                                         <h5 class="card-title">${nome}</h5>
                                         <p class="card-text">${descricao}</p>

@@ -24,6 +24,9 @@
         case 'buscarUser':
             buscarUser($conecta, $_POST['id']);
             break;
+        case 'deletarUsuario':
+            deletarUsuario($conecta);
+            break;
         default:
             break;
     }
@@ -157,5 +160,57 @@
             echo json_encode($dados);
         } else {
             echo json_encode(array('error' => 'Erro ao buscar os dados do usuário'));
+        }
+    }
+
+    function deletarUsuario($conecta){
+
+        $id = $_POST['id'];
+
+        $sql = "SELECT id_projeto FROM projetos WHERE id_usuario = '$id'";
+
+        $result = $conecta->query($sql);
+
+        if($result->num_rows > 0){
+            $ids_projeto = array();
+
+            while($row = $result->fetch_assoc()){
+                $ids_projeto[] = $row['id_projeto'];
+            }
+
+            if(count($ids_projeto) > 0){
+                for($i = 0; $i < count($ids_projeto); $i++){
+                    $id_deletado = $ids_projeto[$i];
+    
+                    $sql_delete_ids = "DELETE FROM valores WHERE id_projeto = '$id_deletado'";
+    
+                    if($conecta->query($sql_delete_ids) !== true){
+                        echo json_encode(array('error' => 'Erro so deletar valores do projeto'));
+                    }
+                }
+            }
+            
+            if(count($ids_projeto) > 0){
+                for($j = 0; $j < count($ids_projeto); $j++){
+                    $id_projeto_deletado = $ids_projeto[$j];
+
+                    $sql_delete_projeto = "DELETE FROM projetos WHERE id_projeto = '$id_projeto_deletado'";
+
+                    if($conecta->query($sql_delete_projeto) !== true){
+                        echo json_encode(array('error' => 'Erro ao tentar deletar projeto'));
+                    }
+                }
+
+                $sql_delete_conta = "DELETE FROM usuario WHERE id_usuario = '$id'";
+
+                if($conecta->query($sql_delete_conta) === true){
+                    
+                    echo json_encode(array('mensagem' => 'Conta deletada com sucesso!'));
+                }
+            }
+
+
+        }else{
+            echo json_encode(array('error' => 'Erro ao tentar deletar conta'));
         }
     }

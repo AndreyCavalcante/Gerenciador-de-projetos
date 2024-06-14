@@ -22,6 +22,9 @@
         case 'atualizarProjeto':
             atualizarProjeto($conecta);
             break;
+        case 'deletarProjeto':
+            deletarProjeto($conecta);
+            break;
         default:
             break;
     }
@@ -266,5 +269,25 @@
             echo json_encode(array('mensagem' => 'Dados do projeto atualizados com sucesso'));
         }else{
             echo json_encode(array('error' => 'Não funcionou MALANDRO'));
+        }
+    }
+
+    function deletarProjeto($conecta){
+        $id = $_POST['id'];
+
+        $sql = "DELETE FROM valores WHERE id_projeto = '$id'";
+
+        if($conecta->query($sql) === true){
+
+            $sql_delete = "DELETE FROM projetos WHERE id_projeto = '$id'";
+
+            if($conecta->query($sql_delete) !== true){
+                echo json_encode(array('error' => 'Erro ao deletar Projeto'));
+            }else{
+                echo json_encode(array('mensagem' => 'Projeto excluído com sucesso!'));
+            }
+
+        }else{
+            echo json_encode(array('error' => 'Erro ao deletar valores do produto'));
         }
     }

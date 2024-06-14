@@ -121,6 +121,7 @@ function mostrarPerfil(id){
                 alertaTemporario(result.error, 3000)
             }else{
                 let conteudo = `
+                    <div class="card-informacoes-usuario">
                         <div class=" d-flex justify-content-center text-center">
                             <label class="label-vertical-nav">
                                 <img src="Data:image/*;base64,${result[0].imagem_base64}" 
@@ -140,26 +141,33 @@ function mostrarPerfil(id){
                                 E-mail: ${result[0].email}
                             </p>
                         </div>
-                        <div class="div-informações">
+                        <div class="div-informações table-informaoes-usuario">
+                            <table class="table-valores" style="margin-bottom: 10px;">
+                                <tbody>
+                                    <tr>
+                                        <td class="itens-table">Total de projetos</td>
+                                        <td class="itens-table">${result[0].total_projetos}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="itens-table">Projetos concluídos</td>
+                                        <td class="itens-table">${result[0].projetos_concluidos}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="itens-table">Projetos em andamento</td>
+                                        <td class="itens-table">${result[0].projetos_em_andamento}</td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                        </div>
+                        <div class="div-informações d-flex justify-content-center text-center" style="flex-direction: column;">
                             <p class="p-informações">
-                                Total de Projetos: ${result[0].total_projetos}
+                                <button type="button" style="margin-left: 30px;" class="btn singin btn-editar" onclick="formAtualizar(${result[0].id_usuario})">Editar</button>
+                            </p>
+                            <p>
+                                <button type="button" style="margin-left: 30px;" class="btn singin btn-editar sair" onclick="deletarConta(${result[0].id_usuario})">Deletar Conta</button>
                             </p>
                         </div>
-                        <div class="div-informações">
-                            <p class="p-informações">
-                                Projetos concluídos: ${result[0].projetos_concluidos}
-                            </p>
-                        </div>
-                        <div class="div-informações">
-                            <p class="p-informações">
-                                projetos em andamento: ${result[0].projetos_em_andamento}
-                            </p>
-                        </div>
-                        <div class="div-informações">
-                            <p class="p-informações">
-                                <button type="button" class="btn singin btn-editar" onclick="formAtualizar(${result[0].id_usuario})">Editar</button>
-                            </p>
-                        </div>
+                    </div>
                 `;
 
                 container.innerHTML = conteudo;
@@ -599,11 +607,6 @@ function maisDetalhes(id){
                                 <img src="imgs/voltar.png" alt="Voltar" text="Voltar">
                             </button>
                         </div>
-                        <div class="div-botao-editar">
-                            <button type="button" class="botao-editar" onclick="criarEditarProjeto(${projeto.id_projeto})">
-                                <img src="imgs/editar.png" class="img-editar" alt="Editar" text="Editar">
-                            </button>
-                        </div>
                         <div class="informacoes">
                             <div>
                                 <h1>${nome}</h1>
@@ -644,6 +647,14 @@ function maisDetalhes(id){
                 novo += `
                                 </tbody>
                             </table>
+                            <div class="div-botao-editar">
+                                <button type="button" class="botao-editar" onclick="criarEditarProjeto(${projeto.id_projeto})">
+                                    <img src="imgs/editar.png" class="img-editar" alt="Editar" text="Editar">
+                                </button>
+                                <button type="button" class="botao-voltar delete" onclick="deletarProjeto(${projeto.id_projeto})">
+                                    <img src="imgs/lixeira.png" class="img-voltar" alt="Editar" text="Editar">
+                                </button>
+                            </div>
                         </div>
                     </div>
                     `;
@@ -932,45 +943,52 @@ function criarEditarProjeto(id_projeto){
             });
 
             let form = `
-                <form id="formAtualizarProjeto">
-                    <h3>Novo projeto</h3>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control input-form" value="${id_geral}" name="id_usuario" id="id_usuario" required>
-                        <input type="hidden" class="form-control input-form" value="${id_projeto}" name="id_projeto" id="id_projeto" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" value="${nome}"  required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required>${descricao}</textarea>
-                    </div>
-                    <div class="form-group">
-                        ${gerarRadioStatus(status_projeto)}
-                    </div>
-                    <div class="form-group">
-                        <h5>Categoria:</h5>
-                        ${categoria_html}
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control input-form" id="investimento" name="investimento" value="${investimento.toFixed(2)}" step="1" min="1" max="99000000.00" placeholder="Investimento do Projeto" required>
-                        <small id="smallInvest"></small>
-                    </div>
-                    <div id="item-container" class="form-group">
-                        ${inputs_valores}
-                    </div>
-                    <div id="itens-novos-container" class="form-group">
-
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn signin btnedit">Salvar Alterações</button>
-                    </div>
-                </form>
-                <div class="justify-content-center text-center align-items-center">
-                    <p>Novo gasto: </p>
-                    <div class="d-flex justify-content-center text-center">
-                        <button type="button" class="nav-button contrario" onclick="adicionarItem(event)">
-                            <p class="text-button">+</p>
+                <div class="container-atualizar-projeto">
+                    <div class="div-botao-voltar">
+                        <button type="button" class="botao-voltar" onclick="maisDetalhes(${id_projeto})">
+                            <img src="imgs/voltar.png" alt="Voltar" text="Voltar">
                         </button>
+                    </div>
+                    <form id="formAtualizarProjeto" class="form-atualizar-projeto">
+                        <h3>Novo projeto</h3>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control input-form" value="${id_geral}" name="id_usuario" id="id_usuario" required>
+                            <input type="hidden" class="form-control input-form" value="${id_projeto}" name="id_projeto" id="id_projeto" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-form" id="nome_projeto" name="nome_projeto" placeholder="Nome do projeto" value="${nome}"  required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="descricao" class="form-control input-form" name="descricao" placeholder="Descrição do projeto" required>${descricao}</textarea>
+                        </div>
+                        <div class="form-group">
+                            ${gerarRadioStatus(status_projeto)}
+                        </div>
+                        <div class="form-group">
+                            <h5>Categoria:</h5>
+                            ${categoria_html}
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control input-form" id="investimento" name="investimento" value="${investimento.toFixed(2)}" step="1" min="1" max="99000000.00" placeholder="Investimento do Projeto" required>
+                            <small id="smallInvest"></small>
+                        </div>
+                        <div id="item-container" class="form-group">
+                            ${inputs_valores}
+                        </div>
+                        <div id="itens-novos-container" class="form-group">
+
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn signin btnedit">Salvar Alterações</button>
+                        </div>
+                    </form>
+                    <div class="justify-content-center text-center align-items-center">
+                        <p>Novo gasto: </p>
+                        <div class="d-flex justify-content-center text-center">
+                            <button type="button" class="nav-button contrario" onclick="adicionarItem(event)">
+                                <p class="text-button">+</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1130,3 +1148,54 @@ $(document).on('submit', '#formAtualizarProjeto', function(e){
     }
 
 });
+
+function deletarProjeto(id){
+
+    if(confirm("Realmente deseja excluir esse projeto?")){
+        $.ajax({
+            url: 'php/manterProjetos.php',
+            method: 'POST',
+            data: {form: 'deletarProjeto', id: id},
+            dataType: 'json',
+            success: function(result){
+
+                if('error' in result){
+                    alertaTemporario(result.error, 3000);
+                }else{
+                    alertaTemporario(result.mensagem, 3000);
+                    setTimeout( function(){
+                        location.reload();
+                    }, 3000);
+                }
+            }
+        });
+    }
+}
+
+function deletarConta(id){
+
+    if(confirm('Tem certeza que deseja deletar sua conta?')){
+        $.ajax({
+            url: 'php/manter_usuarios.php',
+            method: 'POST',
+            data: {form: 'deletarUsuario', id: id},
+            dataType: 'json',
+            success: function(result){
+
+                if('error' in result){
+                    alertaTemporario(result.error, 3000);
+                }else{
+                    alertaTemporario(result.mensagem, 3000);
+                    setTimeout( function(){
+                        window.location.href = 'index.php';
+                    }, 3000);
+                }
+            },
+            error: function(xhr, status, error){
+                console.error(xhr.responseText);
+                console.error(status);
+                console.error(error);
+            }
+        });
+    }
+}

@@ -86,7 +86,7 @@ function confirmarSenha() {
     }
 }
 
-function showImage(e){
+function mostrarImagem(e){
     const inputFile = document.querySelector("#picture__input");
     const pictureImage = document.querySelector(".picture__image");
     const pictureImageTxt = "Escolha uma imagem";
@@ -96,7 +96,7 @@ function showImage(e){
         const inputTarget = e.target;
         const file = inputTarget.files[0];
 
-        if (file) {
+        if (file === true) {
             const reader = new FileReader();
 
             reader.addEventListener("load", function (e) {
@@ -165,4 +165,4 @@ function cadastrarUser(){
 document.getElementById('senha').addEventListener('change', confirmarSenha);
 document.getElementById('confirmarSenha').addEventListener('change', confirmarSenha);
 document.getElementById('email').addEventListener('change', confimarEmail);
-document.getElementById('picture__input').addEventListener('change', showImage);
+document.getElementById('picture__input').addEventListener('change', mostrarImagem);

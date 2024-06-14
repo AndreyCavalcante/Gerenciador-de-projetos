@@ -59,7 +59,7 @@ $(document).on('submit', '#formIndex', function(e){
             dataType: 'json',
             success: function(result){
                 if(result === true){
-                    window.location.href = 'perfil.php';
+                    window.location.href = 'projetos.php';
                 }else{
                     alertaTemporario('Dados incorretos, tente novamente!', 3000);
                 }

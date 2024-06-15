@@ -69,11 +69,11 @@
                 <div class="pesq-container">
                     <form id="formPesq" class="form-pesq">
                         <input type="text" name="pesq" id="pesq" class="input-nav-pesq">
-                        <button type="submit" form="formPesq" class="submit-nav-pesq"><img src="imgs/lupa.png" alt="Pesquisar" class="img-pesq"></button>
+                        <button type="button" form="formPesq" class="submit-nav-pesq" onclick="acessarProjetos()"><img src="imgs/lupa.png" alt="Pesquisar" class="img-pesq"></button>
                     </form>
                 </div>
                 <a href="#" style="text-decoration: none;">
-                    <button type="button" class="nav-button" onclick="formCriar(<?php echo $id;?>)">
+                    <button type="button" class="nav-button" onclick="acessarProjetos()">
                         <p class="text-button">+</p>
                     </button>
                 </a>

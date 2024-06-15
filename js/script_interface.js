@@ -782,7 +782,6 @@ function removerValorAntigo(button){
     atualizarValores();
 }
 
-
 $(document).on('submit', '#formAtualizarProjeto', function(e){
     e.preventDefault();
 

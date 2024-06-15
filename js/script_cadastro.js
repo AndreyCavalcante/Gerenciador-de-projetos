@@ -88,9 +88,9 @@ function confirmarSenha() {
 
 function mostrarImagem(e) {
     const input_arquivo = document.querySelector("#input_da_imagem");
-    const pictureImage = document.querySelector(".imagem_foto");
-    const pictureImageTxt = "Escolha uma imagem";
-    const preview = document.getElementById("preview");
+    const imagem_foto = document.querySelector(".imagem_foto");
+    const imagem_foto_texto = "Escolha uma imagem";
+    const visualizar = document.getElementById("preview");
 
     const inputTarget = e.target;
     const file = inputTarget.files[0];
@@ -100,16 +100,16 @@ function mostrarImagem(e) {
 
         reader.addEventListener("load", function (e) {
             const readerTarget = e.target;
-            preview.src = readerTarget.result;
-            preview.style.display = 'block';
-            pictureImage.style.display = 'none';
+            visualizar.src = readerTarget.result;
+            visualizar.style.display = 'block';
+            imagem_foto.style.display = 'none';
         });
 
         reader.readAsDataURL(file);
     } else {
-        pictureImage.innerHTML = pictureImageTxt;
-        pictureImage.style.display = 'block';
-        preview.style.display = 'none';
+        imagem_foto.innerHTML = imagem_foto_texto;
+        imagem_foto.style.display = 'block';
+        visualizar.style.display = 'none';
     }
 }
 

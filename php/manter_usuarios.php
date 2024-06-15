@@ -167,7 +167,10 @@
 
         $id = $_POST['id'];
 
-        $sql = "SELECT id_projeto FROM projetos WHERE id_usuario = '$id'";
+        $sql = "SELECT u.id_usuario as id_usuario, p.id_projeto as id_projeto
+                FROM usuario u
+                LEFT JOIN projetos p ON p.id_usuario = u.id_usuario
+                WHERE u.id_usuario = $id;";
 
         $result = $conecta->query($sql);
 
@@ -200,13 +203,13 @@
                         echo json_encode(array('error' => 'Erro ao tentar deletar projeto'));
                     }
                 }
+            }
 
-                $sql_delete_conta = "DELETE FROM usuario WHERE id_usuario = '$id'";
+            $sql_delete_conta = "DELETE FROM usuario WHERE id_usuario = '$id'";
 
-                if($conecta->query($sql_delete_conta) === true){
-                    
-                    echo json_encode(array('mensagem' => 'Conta deletada com sucesso!'));
-                }
+            if($conecta->query($sql_delete_conta) === true){
+                
+                echo json_encode(array('mensagem' => 'Conta deletada com sucesso!'));
             }
 
 

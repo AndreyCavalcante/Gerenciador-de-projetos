@@ -314,6 +314,8 @@ function acessarProjetos(){
 
 function deletarConta(id){
 
+    console.log(id);
+
     if(confirm('Tem certeza que deseja deletar sua conta?')){
         $.ajax({
             url: 'php/manter_usuarios.php',

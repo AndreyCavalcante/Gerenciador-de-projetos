@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style_page.css">
     </head>
     <body>
         <header>
@@ -57,11 +58,11 @@
                                     <small id="smallConfirmar"></small>
                                 </div>
                                 <div class="form-group d-flex text-center justify-content-center">
-                                <label class="picture" for="picture__input" tabIndex="0">
-                                    <span class="picture__image">Escolha uma imagem</span>
-                                </label>
-                                
-                                <input type="file" name="picture__input" id="picture__input">
+                                    <label class="foto" for="input_da_imagem" tabIndex="0">
+                                        <span class="imagem_foto">Escolha uma imagem</span>
+                                        <img id="preview" src="" class="imagem_exibir">
+                                    </label>
+                                    <input type="file" name="input_da_imagem" id="input_da_imagem" style="display: none;" onchange="mostrarImagem(event)">
                                 </div>
                                 <a href="index.php"><button type="button" class="btn signin">Entrar</button></a>
                                 <button type="button" class="btn signin" onclick="verificarConfirmacoes()">Registrar</button>

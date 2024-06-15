@@ -86,35 +86,31 @@ function confirmarSenha() {
     }
 }
 
-function mostrarImagem(e){
-    const inputFile = document.querySelector("#picture__input");
-    const pictureImage = document.querySelector(".picture__image");
+function mostrarImagem(e) {
+    const input_arquivo = document.querySelector("#input_da_imagem");
+    const pictureImage = document.querySelector(".imagem_foto");
     const pictureImageTxt = "Escolha uma imagem";
-    pictureImage.innerHTML = pictureImageTxt;
+    const preview = document.getElementById("preview");
 
-    
-        const inputTarget = e.target;
-        const file = inputTarget.files[0];
+    const inputTarget = e.target;
+    const file = inputTarget.files[0];
 
-        if (file === true) {
-            const reader = new FileReader();
+    if (file) {
+        const reader = new FileReader();
 
-            reader.addEventListener("load", function (e) {
-                const readerTarget = e.target;
+        reader.addEventListener("load", function (e) {
+            const readerTarget = e.target;
+            preview.src = readerTarget.result;
+            preview.style.display = 'block';
+            pictureImage.style.display = 'none';
+        });
 
-                const img = document.createElement("img");
-                img.src = readerTarget.result;
-                img.classList.add("picture__img");
-
-                pictureImage.innerHTML = "";
-                pictureImage.appendChild(img);
-            });
-
-            reader.readAsDataURL(file);
-        } else {
-            pictureImage.innerHTML = pictureImageTxt;
-        }
-
+        reader.readAsDataURL(file);
+    } else {
+        pictureImage.innerHTML = pictureImageTxt;
+        pictureImage.style.display = 'block';
+        preview.style.display = 'none';
+    }
 }
 
 function verificarConfirmacoes(){
@@ -133,8 +129,8 @@ function cadastrarUser(){
     formData.append('sobrenome', document.querySelector('[name="sobrenome"]').value);
     formData.append('email', document.querySelector('[name="email"]').value);
     formData.append('senha', document.querySelector('[name="senha"]').value);
-    if (document.querySelector('[name="picture__input"]').files[0]) {
-        formData.append('imagem', document.querySelector('[name="picture__input"]').files[0]);
+    if (document.querySelector('[name="input_da_imagem"]').files[0]) {
+        formData.append('imagem', document.querySelector('[name="input_da_imagem"]').files[0]);
     }
 
     $.ajax({
@@ -165,4 +161,4 @@ function cadastrarUser(){
 document.getElementById('senha').addEventListener('change', confirmarSenha);
 document.getElementById('confirmarSenha').addEventListener('change', confirmarSenha);
 document.getElementById('email').addEventListener('change', confimarEmail);
-document.getElementById('picture__input').addEventListener('change', mostrarImagem);
+document.getElementById('input_da_imagem').addEventListener('change', mostrarImagem);

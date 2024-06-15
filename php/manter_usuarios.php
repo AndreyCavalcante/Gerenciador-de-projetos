@@ -103,11 +103,11 @@
         if(!empty($senha)){
             $sql .= "senha = '$senha', ";
         }
-        if (!empty($_FILES['picture__input']['name'])) {
-            $imagem_nome = $_FILES['picture__input']['name'];
+        if (!empty($_FILES['input_da_imagem']['name'])) {
+            $imagem_nome = $_FILES['input_da_imagem']['name'];
             $sql .= "nome_imagem = '$imagem_nome', ";
 
-            $imagem_temp = $_FILES['picture__input']['tmp_name'];
+            $imagem_temp = $_FILES['input_da_imagem']['tmp_name'];
             $imagem_binario = addslashes(file_get_contents($imagem_temp));
             $sql .= "imagem = '$imagem_binario', ";
         }

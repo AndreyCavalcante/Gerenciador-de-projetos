@@ -82,7 +82,7 @@
 
         <div class="vertical-nav nav-edit" id="verticalNav">
             <div class="d-flex justify-content-center text-center">
-                <label class="label-vertical-nav" onclick="mostrarPerfil(<?php echo $id?>)">
+                <label class="label-vertical-nav" onclick="acessarPerfil()">
                     <img
                         alt="Foto de perfil do usuário" 
                         class="image-vertical-nav"

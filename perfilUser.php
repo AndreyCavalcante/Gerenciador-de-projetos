@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Meus Projetos</title>
+        <title>Meu Perfil</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style_page.css">
 
@@ -92,9 +92,7 @@
                 </label>
             </div>
             <div class="justify-content-center text-center">
-                <button type="button" id="projetos" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'todas')">Projetos</button>
-                <button type="button" id="concluidos" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'Concluído')">Concluídos</button>
-                <button type="button" style="font-size: 16px;" id="em_andamento" class="btn signin" onclick="buscarProjetos(<?php echo $id;?>, 'Em Andamento')">Em andamento</button>
+                <button type="button" id="projetos" class="btn signin" onclick="acessarProjetos()">Projetos</button>
                 <form action="php/logout.php" method="POST"><button type="submit" class="btn signin sair" style="margin-bottom: 10px;">Sair</button></form>
             </div>
         </div>
@@ -116,7 +114,7 @@
         <script src="js/jquery-3.7.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/script_interface.js"></script>
+        <script src="js/script_perfil.js"></script>
         <script>
             $(document).ready(function() {
                 $('.navbar-toggler').click(function() {

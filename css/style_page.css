@@ -333,11 +333,11 @@ body{
     background: #222;
 }
 
-#picture__input {
+#input_da_imagem {
     display: none;
   }
   
-.picture {
+.foto {
     width: 300px;
     aspect-ratio: 1/1;
     background: #eee;
@@ -353,24 +353,24 @@ body{
     overflow: hidden;
 }
 
-.picture:hover {
+.foto:hover {
     color: black;
     background: #ddd;
 }
 
-.picture:active {
+.foto:active {
     border-color: #446DCA;
     color:  #446DCA;
     background: #ddd;
 }
 
-.picture:focus {
+.foto:focus {
     color: black;
     background: #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.picture__img {
+.imagem_exibir{
     max-width: 100%;
 }
 
@@ -585,4 +585,18 @@ body{
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
+}
+
+.a_projetos {
+    text-decoration: none;
+    color: inherit;
+}
+
+.a_projetos:hover,
+.a_projetos:focus,
+.a_projetos:active {
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+    outline: none;
 }

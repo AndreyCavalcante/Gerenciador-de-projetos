@@ -179,3 +179,17 @@
     max-width: 100%;
   }
   
+.footer-index{
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.footer-index img{
+    width: 16px;
+}
+
+.custon-footer{
+    background: repeating-linear-gradient(45deg, #fff, #fff 10px, #f9f9f9 10px, #f9f9f9 20px);
+    padding: 20px;
+}

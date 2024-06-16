@@ -10,6 +10,15 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
+
+        <style>
+            .custom-footer {
+                background: repeating-linear-gradient(45deg,#fff,#fff 10px,#ededed 10px,#ededed 20px);
+                padding: 5px; /* Ajuste o padding conforme necessário */
+                text-align: center; /* Certifique-se de que o texto está centralizado */
+            }
+        </style>
+
     </head>
     <body>
         <header>
@@ -54,6 +63,19 @@
                 </div>
             </div>
         </div>
+
+        <footer class="custom-footer">
+            <div class="footer-index justify-content-center text-center form-container">
+                <p>Projeto criado por: </p>
+                <a href="https://www.instagram.com/andrey.cavalcante05/">
+                    <img src="imgs/instagramlogo.png" width="16px" alt="">Andrey Cavalcante  -  
+                </a>
+                <a href="https://www.instagram.com/o_peixinho_/">
+                    <img src="imgs/instagramlogo.png" width="16px" alt="">Victor Kalebe
+                </a>
+                <p>junho de 2024</p>
+            </div>
+        </footer>
         
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jquery-3.7.1.min.js"></script>

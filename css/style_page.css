@@ -586,17 +586,3 @@ body{
     padding: 10px;
     margin: 10px;
 }
-
-.a_projetos {
-    text-decoration: none;
-    color: inherit;
-}
-
-.a_projetos:hover,
-.a_projetos:focus,
-.a_projetos:active {
-    text-decoration: none;
-    color: inherit;
-    background-color: transparent;
-    outline: none;
-}

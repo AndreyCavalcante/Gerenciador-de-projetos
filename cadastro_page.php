@@ -11,6 +11,19 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/style_page.css">
+
+        <style>
+            #tituloCadastro{
+                font-size: 80px;
+            }
+
+            @media (max-width: 600px) {
+                #tituloCadastro {
+                    font-size: 60px; 
+                }
+            }
+        </style>
+
     </head>
     <body>
         <header>
@@ -37,7 +50,7 @@
                         <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
                             <div id="form-container" class="form-container">
                             <form id="formCadastro" class="form-horizontal">
-                                <h3 class="title">Registra-se</h3>
+                                <h3 class="title" id="tituloCadastro">Registra-se</h3>
                                 <span class="description">Faça seu cadastro no melhor gestor de projetos</span>
                                 <div class="form-group">
                                     <input class="form-control" type="text" name="nome" id="nome" placeholder="Seu nome" required>

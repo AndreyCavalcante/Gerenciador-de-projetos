@@ -1,10 +1,34 @@
 function alertaTemporario(mensagem, tempo) {
-    $('#mensagemModal').text(mensagem);
+    let modalMensagem = document.getElementById('modal-body');
+
+    modalMensagem.innerHTML = `
+        <div class="mensagem-modal-loading">
+            <p>${mensagem}</p>
+        </div>    
+    `;
+
     $('#meuModal').modal('show');
 
     setTimeout(function() {
-             $('#meuModal').modal('hide');
+        $('#meuModal').modal('hide');
     }, tempo);
+}
+
+function loadingAlert(mensagem, value){
+    let modalMensagem = document.getElementById('modal-body');
+
+    modalMensagem.innerHTML = `
+        <div class="mensagem-modal-loading">
+            <p>${mensagem}</p>
+            <div class="loading"></div>
+        </div>    
+    `;
+
+    if(value == true){
+        $('#meuModal').modal('show');
+    }else if(value == false){
+        $('#meuModal').modal('hide');
+    }
 }
 
 const confirmações = {
@@ -133,6 +157,8 @@ function cadastrarUser(){
         formData.append('imagem', document.querySelector('[name="input_da_imagem"]').files[0]);
     }
 
+    loadingAlert('Carregando...', true)
+
     $.ajax({
         url: 'php/manter_usuarios.php',
         method: 'POST',
@@ -141,19 +167,27 @@ function cadastrarUser(){
         contentType: false,
         dataType: 'json',
         success: function(result){
+            loadingAlert('Carregando...', false);
             if (result.error) {
                 console.error('Erro:', result.error);
+                alertaTemporario(result.error, 3000);
+                setTimeout(function(){
+                    window.location.reload();
+                }, 3000);
             } else {
                 alertaTemporario(result.message, 3000);
-                setTimeout( function(){
-                    window.location.href = 'index.php';
-                },3000);
+                setTimeout(function(){
+                    window.location.href = 'sobre.php';
+                }, 3000);
             }
+        
         },
         error: function(xhr, status, error){
-            console.error(xhr.reponseText);
+            loadingAlert('Carregando...', false);
+            console.error(xhr.responseText);
             console.error(status);
             console.error(error);
+            alertaTemporario('Erro no servidor. Tente novamente mais tarde.', 3000);
         }
     });
 }

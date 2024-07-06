@@ -36,8 +36,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
-                      <p id="mensagemModal"></p>
+                    <div class="modal-body" id="modal-body">
                     </div>
                   </div>
                 </div>

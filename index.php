@@ -66,14 +66,7 @@
 
         <footer class="custom-footer">
             <div class="footer-index justify-content-center text-center form-container">
-                <p>Projeto criado por: </p>
-                <a href="https://www.instagram.com/andrey.cavalcante05/">
-                    <img src="imgs/instagramlogo.png" width="16px" alt="">Andrey Cavalcante  -  
-                </a>
-                <a href="https://www.instagram.com/o_peixinho_/">
-                    <img src="imgs/instagramlogo.png" width="16px" alt="">Victor Kalebe
-                </a>
-                <p>junho de 2024</p>
+                <p>Setembro de 2024</p>
             </div>
         </footer>
         

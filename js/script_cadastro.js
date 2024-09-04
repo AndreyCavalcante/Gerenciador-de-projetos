@@ -177,7 +177,7 @@ function cadastrarUser(){
             } else {
                 alertaTemporario(result.message, 3000);
                 setTimeout(function(){
-                    window.location.href = 'sobre.php';
+                    window.location.href = 'index.php';
                 }, 3000);
             }
         
